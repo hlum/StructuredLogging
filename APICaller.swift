@@ -19,11 +19,12 @@ struct Quote: Decodable {
     let quote, author: String
 }
 
+//By using Logger u can just tap on the log and hit space or right click the log message and jump to the caller
 
 final class APICaller {
     func fetchQuotes() async -> [Quote]? {
         guard let url = URL(string: "https://dummyjson.com/quotes") else {
-            print("Invalid URL String")
+            Logger.standard.info("ERROR: Invalid URL")
             return nil
         }
         do {
@@ -31,14 +32,14 @@ final class APICaller {
             
             guard let response = response as? HTTPURLResponse,
                   response.statusCode == 200 else {
-                print("invalid response Code")
+                Logger.standard.info("ERROR: Invalid Response Status Code \(URL.documentsDirectory.path())")
                 return nil
             }
             
             let decodedData = try JSONDecoder().decode(Response.self, from: data)
             return decodedData.quotes
         } catch {
-            print(error.localizedDescription)
+            Logger.standard.info("ERROR: Unknown error \(error.localizedDescription)")
             return nil
         }
     }

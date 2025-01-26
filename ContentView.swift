@@ -22,7 +22,7 @@ struct ContentView: View {
                     print("\(quote.quote)\n\n")
                 }
             } else {
-                print("No quotes")
+                Logger.standard.info("No quotes returned")
             }
         }
         .padding()
